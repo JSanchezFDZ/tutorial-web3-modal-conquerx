@@ -1,18 +1,19 @@
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { useSignMessage } from "wagmi";
 
-const SignMessageComponent = () => {
+const SignMessageComponent = ({infoAccount}) => {
   const [message, setMessage] = useState();
-  const { signMessage, data: signature } = useSignMessage();
+  const [signature, setSignature] = useState();
+  const { signer } = infoAccount;
 
   const handleOnChange = (e) => {
     const value = e.target.value;
     setMessage(value);
   };
 
-  const handleSignMessage = () => {
-    signMessage({ message });
+  const handleSignMessage = async () => {
+    const signature = await signer?.signMessage(message)
+    setSignature(signature);
   };
 
   return (
